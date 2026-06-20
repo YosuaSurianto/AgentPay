@@ -1,118 +1,47 @@
-# Stellar Notes DApp
+# AgentPay — Autonomous Payment Rails for the AI Economy 🤖💸
 
-**Stellar Notes DApp** - Blockchain-Based Decentralized Note-Taking System
+![Stellar](https://img.shields.io/badge/Network-Stellar_Testnet-black?style=for-the-badge&logo=stellar)
+![Soroban](https://img.shields.io/badge/Smart_Contract-Soroban_Rust-orange?style=for-the-badge&logo=rust)
+![x402](https://img.shields.io/badge/Protocol-x402-blue?style=for-the-badge)
 
-## Project Description
+## ⚡ What is AgentPay?
+**AgentPay** is a production-grade infrastructure layer that enables AI agents to autonomously pay for API resources on the Stellar network using the **x402 protocol** and **Soroban Smart Contracts**. 
 
-Stellar Notes DApp is a decentralized smart contract solution built on the Stellar blockchain using Soroban SDK. It provides a secure, immutable platform for managing personal notes directly on the blockchain. The contract ensures that your data is stored transparently and is only manageable through predefined smart contract functions, eliminating reliance on centralized database providers.
+No API keys. No human approval. No subscriptions. Just autonomous machine-to-machine microtransactions settled in ~5 seconds.
 
-The system allows users to create, view, and delete notes, leveraging the efficiency and security of the Stellar network. Each note is uniquely identified and stored within the contract's instance storage, ensuring data persistence and reliability.
+## 🚨 The Problem
+AI agents are evolving, but their economic models are broken. When an autonomous agent hits a paywalled API (e.g., premium on-chain data, ZK-proof generation), it halts. It requires a human to configure billing, manage API keys, and manually approve payments. This friction destroys the core concept of true machine autonomy at scale.
 
-## Project Vision
+## 💡 The Solution
+AgentPay implements the x402 payment protocol directly on Stellar. It acts as an **On-Chain Escrow & Authorization layer** for AI.
+1. The AI Agent requests a premium resource.
+2. The Server responds with HTTP `402 Payment Required`.
+3. The Agent seamlessly signs a Soroban auth entry off-chain and submits it via a Relayer.
+4. The AgentPay Smart Contract validates the agent's 24-hour rolling limits and executes the USDC payment.
+5. The Server verifies the on-chain event and serves the data.
 
-Our vision is to revolutionize personal productivity in the digital age by:
+## 🏆 Why We Built This on Stellar
+Stellar isn't just an option; it's the optimal environment for machine payments:
+* **Native Soroban Auth:** Agents can sign payment payloads *off-chain* without holding native gas tokens (XLM). 
+* **Relayer Friendly:** Deep integration with OpenZeppelin Relayer ensures parallel execution without sequence number bottlenecks.
+* **Micro-transaction Ready:** Fees at ~$0.0001 make fractional data purchases economically viable.
 
-- **Decentralizing Data**: Moving note-taking from centralized servers to a global, distributed blockchain
-- **Ensuring Ownership**: Empowering users to have complete control and ownership over their digital thoughts and information
-- **Guaranteeing Immutability**: Providing a permanent, tamper-proof record of notes that cannot be altered or deleted by third parties
-- **Enhancing Privacy**: Leveraging blockchain security to protect personal information from unauthorized access
-- **Building Trustless Systems**: Creating a platform where data integrity is guaranteed by code, not by company promises
+## 🧠 Smart Contract Innovations (Rust / Soroban)
+This isn't a simple token transfer contract. It is highly optimized for high-frequency AI interactions:
+* **Zero-Cost Storage via Events:** Instead of bloating state storage with payment histories, the contract emits lightweight Soroban Events. Relayers and indexers read these for free, dropping contract execution costs significantly.
+* **24-Hour Rolling Window Algorithm:** Instead of naive UTC resets, the escrow enforces precision spending limits using a dynamic 24-hour rolling window based on ledger timestamps.
+* **Granular Control:** Admins can pause agents and adjust per-transaction or daily USDC limits on the fly.
 
-We envision a future where digital information is truly personal and sovereign, empowering individuals with complete autonomy over their digital assets.
+## 💻 Tech Stack
+* **Smart Contract:** Rust (Soroban `no_std`)
+* **Backend API:** Node.js, Express, TypeScript (Paywall Simulator)
+* **Frontend Demo:** Next.js, Tailwind CSS (Featuring a cyberpunk-themed, glassmorphism UI with real-time 3D terminal logs to visualize the HTTP 402 flow)
+* **Facilitator:** OpenZeppelin Relayer (Stellar Testnet)
 
-## Key Features
+## 🚀 Quick Start (Local Setup)
 
-### 1. **Simple Note Creation**
-
-- Create notes with just one function call
-- Specify title and content for each note
-- Automated ID generation for unique identification
-- Persistent storage on the Stellar blockchain
-
-### 2. **Efficient Data Retrieval**
-
-- Fetch all stored notes in a single call
-- Structured data representation for easy frontend integration
-- Quick access to your entire note collection
-- Real-time synchronization with the blockchain state
-
-### 3. **Secure Deletion**
-
-- Remove specific notes using their unique IDs
-- Permanent removal from the contract storage
-- Clean and efficient storage management
-- Immediate update of the note list after deletion
-
-### 4. **Transparency and Security**
-
-- View all note activities on the blockchain
-- Blockchain-based verification of all storage actions
-- Immutable records of note creation and deletion
-- Protected against unauthorized modifications
-
-### 5. **Stellar Network Integration**
-
-- Leverages the high speed and low cost of Stellar
-- Built using the modern Soroban Smart Contract SDK
-- Scalable architecture for growing note collections
-- Interoperable with other Stellar-based services
-
-## Contract Details
-
-- Contract Address: CBLU4IUASQ4WUMOXBFLZRSBBLILGOH33GS4LUPKFBCCCMJCDQNMF7G2M
-  (Screenshot has been removed)
-
-## Future Scope
-
-### Short-Term Enhancements
-
-1. **Note Encryption**: Support for end-to-end encryption of note content for enhanced privacy
-2. **Category Management**: Add tags and categories to organize notes efficiently
-3. **Rich Text Support**: Extend support beyond plain text to include Markdown and formatted content
-4. **Search Functionality**: Implement advanced search filters for large note collections
-
-### Medium-Term Development
-
-5. **Collaborative Notes**: Implement multi-signature requirements for shared or collaborative note-taking
-   - Shared access for multiple addresses
-   - Permission-based editing and viewing
-   - Version history tracking
-6. **Notification System**: Off-chain bridge to alert users of new updates or shared notes
-7. **Asset Attachment**: Capability to attach digital assets or tokens to specific notes
-8. **Inter-Contract Integration**: Allow other smart contracts to interact with and store data in the notes contract
-
-### Long-Term Vision
-
-9. **Cross-Chain Synchronization**: Extend note storage to multiple blockchain networks
-10. **Decentralized UI Hosting**: Host the frontend on IPFS or similar decentralized platforms
-11. **AI-Powered Summarization**: Optional integration with AI to help users summarize their notes
-12. **Privacy Layers**: Implement zero-knowledge proofs for completely private note content
-13. **DAO Governance**: Community-driven protocol improvements and feature prioritization
-14. **Identity Management**: Integration with decentralized identity (DID) systems for user management
-
-### Enterprise Features
-
-15. **Corporate Documentation**: Adapt the system for secure corporate record-keeping
-16. **Immutable Logging**: Create time-locked logs for audit purposes
-17. **Automated Reporting**: Automatic note triggers for periodic reporting
-18. **Multi-Language Support**: Expand accessibility with internationalization
-
----
-
-## Technical Requirements
-
-- Soroban SDK
-- Rust programming language
-- Stellar blockchain network
-
-## Getting Started
-
-Deploy the smart contract to Stellar's Soroban network and interact with it using the three main functions:
-
-- `create_note()` - Create a new note with a title and content
-- `get_notes()` - Retrieve all stored notes from the contract
-- `delete_note()` - Remove a specific note by its ID
-
----
-
-**Stellar Notes DApp** - Securing Your Thoughts on the Blockchain
+### 1. Smart Contract Deployment
+```bash
+cd contracts
+soroban contract build
+soroban contract deploy --wasm target/wasm32-unknown-unknown/release/agentpay.wasm --source <YOUR_SECRET_KEY> --network testnet
