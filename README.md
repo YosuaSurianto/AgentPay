@@ -37,11 +37,3 @@ This isn't a simple token transfer contract. It is highly optimized for high-fre
 * **Backend API:** Node.js, Express, TypeScript (Paywall Simulator)
 * **Frontend Demo:** Next.js, Tailwind CSS (Featuring a cyberpunk-themed, glassmorphism UI with real-time 3D terminal logs to visualize the HTTP 402 flow)
 * **Facilitator:** OpenZeppelin Relayer (Stellar Testnet)
-
-## 🚀 Quick Start (Local Setup)
-
-### 1. Smart Contract Deployment
-```bash
-cd contracts
-soroban contract build
-soroban contract deploy --wasm target/wasm32-unknown-unknown/release/agentpay.wasm --source <YOUR_SECRET_KEY> --network testnet
