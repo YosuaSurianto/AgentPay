@@ -159,12 +159,7 @@ impl AgentPayContract {
             panic!("AgentPay: insufficient balance");
         }
 
-        // ✅ All rules passed — execute payment
-        let token_addr: Address = env.storage().instance().get(&DataKey::TokenAddr).unwrap();
-        let token_client = token::Client::new(&env, &token_addr);
-        token_client.transfer(&env.current_contract_address(), &recipient, &amount);
-
-        // Update state
+        // Update state FIRST (Checks-Effects-Interactions)
         env.storage().instance().set(&DataKey::Balance, &(balance - amount));
         env.storage().instance().set(&DataKey::DailySpent, &(daily_spent + amount));
 
@@ -178,6 +173,11 @@ impl AgentPayContract {
         };
         env.storage().persistent().set(&DataKey::Payment(count), &payment);
         env.storage().instance().set(&DataKey::PaymentCount, &(count + 1));
+
+        // ✅ All rules passed — execute payment
+        let token_addr: Address = env.storage().instance().get(&DataKey::TokenAddr).unwrap();
+        let token_client = token::Client::new(&env, &token_addr);
+        token_client.transfer(&env.current_contract_address(), &recipient, &amount);
 
         env.storage().instance().extend_ttl(100, 100);
 
@@ -236,11 +236,12 @@ impl AgentPayContract {
             panic!("AgentPay: insufficient balance");
         }
 
+        // Update state FIRST
+        env.storage().instance().set(&DataKey::Balance, &(balance - amount));
+
         let token_addr: Address = env.storage().instance().get(&DataKey::TokenAddr).unwrap();
         let token_client = token::Client::new(&env, &token_addr);
         token_client.transfer(&env.current_contract_address(), &config.owner, &amount);
-
-        env.storage().instance().set(&DataKey::Balance, &(balance - amount));
     }
 
     // ----------------------------------------------------------

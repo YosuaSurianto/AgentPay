@@ -17,7 +17,7 @@ AgentPay implements the x402 payment protocol directly on Stellar. It acts as an
 1. The AI Agent requests a premium resource.
 2. The Server responds with HTTP `402 Payment Required`.
 3. The Agent seamlessly signs a Soroban auth entry off-chain and submits it via a Relayer.
-4. The AgentPay Smart Contract validates the agent's 24-hour rolling limits and executes the USDC payment.
+4. The AgentPay Smart Contract validates the agent's daily limits and executes the USDC payment.
 5. The Server verifies the on-chain event and serves the data.
 
 ## 🏆 Why We Built This on Stellar
@@ -28,8 +28,8 @@ Stellar isn't just an option; it's the optimal environment for machine payments:
 
 ## 🧠 Smart Contract Innovations (Rust / Soroban)
 This isn't a simple token transfer contract. It is highly optimized for high-frequency AI interactions:
-* **Zero-Cost Storage via Events:** Instead of bloating state storage with payment histories, the contract emits lightweight Soroban Events. Relayers and indexers read these for free, dropping contract execution costs significantly.
-* **24-Hour Rolling Window Algorithm:** Instead of naive UTC resets, the escrow enforces precision spending limits using a dynamic 24-hour rolling window based on ledger timestamps.
+* **On-chain Payment History:** Every transaction is recorded directly on-chain. This allows the frontend or any client to verify exactly what resources were purchased and how much was spent without relying on an external database.
+* **Automated Daily Limits:** The escrow enforces precise spending limits with automated daily resets based on ledger timestamps, ensuring agents never overspend their daily budget.
 * **Granular Control:** Admins can pause agents and adjust per-transaction or daily USDC limits on the fly.
 
 ## 💻 Tech Stack
